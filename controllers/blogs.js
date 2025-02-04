@@ -129,15 +129,22 @@ const handleGetBlogById = async (req, res) => {
     }
 
     const blogData = blog.toObject();
+
+    // Ensure blogImage has the correct base URL
     if (blogData.blogImage && !blogData.blogImage.startsWith("http")) {
-      blogData.blogImage = `${getBaseUrl()}/${blogData.blogImage}`;
+      blogData.blogImage = `${getBaseUrl()}/uploads/${blogData.blogImage}`;
     }
 
     return res.status(200).json({ status: 200, message: "Blog retrieved successfully", data: blogData });
   } catch (err) {
-    return res.status(500).json({ status: 500, message: "Internal server error", err: err.message });
+    return res.status(500).json({ status: 500, message: "Internal server error", error: err.message });
   }
 };
+
+// Function to get the base URL dynamically
+// const getBaseUrl = () => {
+//   return process.env.BASE_URL || "http://localhost:8080"; // Ensure this matches your backend port
+// };
 
 module.exports = {
   handleCreateBlog,
