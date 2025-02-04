@@ -23,7 +23,7 @@ const handleRegister = async (req, res) => {
     }
 
     // The URL will be "https://your-server.com/uploads/filename"
-    body.photo = `/uploads/${photo.filename}`;
+    body.photo = `https://backend-zd8i.onrender.com/uploads/${photo.filename}`;
     
     const newUser = await createUser(body);
 
