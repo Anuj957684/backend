@@ -131,16 +131,24 @@ const handleGetBlogById = async (req, res) => {
     const blogData = blog.toObject();
 
     // Ensure blogImage has the correct base URL
-    if (photo) {
-      const baseUrl = getBaseUrl();
-      body.blogImage = `${baseUrl}/uploads/${photo.filename}`; // Use the correct base URL
+    if (blogData.blogImage) {  // Check if blogImage exists
+      // Check if blogImage is not already a URL (starts with 'http')
+      if (!blogData.blogImage.startsWith('http')) {
+        const baseUrl = getBaseUrl();
+        blogData.blogImage = `${baseUrl}/uploads/${blogData.blogImage}`; // Correctly form the URL
+      }
     }
 
-    return res.status(200).json({ status: 200, message: "Blog retrieved successfully", data: blogData });
+    return res.status(200).json({
+      status: 200,
+      message: "Blog retrieved successfully",
+      data: blogData
+    });
   } catch (err) {
     return res.status(500).json({ status: 500, message: "Internal server error", error: err.message });
   }
 };
+
 
 // Function to get the base URL dynamically
 // const getBaseUrl = () => {
