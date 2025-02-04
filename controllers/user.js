@@ -25,7 +25,9 @@ const handleRegister =  async (req, res) => {
       return res.status(400).json({ status: 400, message: "No photo uploaded" });
     }
 
-    body.photo = `/uploads/${photo.filename}`;
+    
+
+    body.photo = `https://backend-zd8i.onrender.com/uploads/${photo.filename}`;
     const newUser = await createUser(body);
 
     if(!newUser) {
