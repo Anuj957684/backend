@@ -20,8 +20,7 @@ const handleCreateBlog = async (req, res) => {
 
   // If an image URL is provided in the request body
   if (body.blogImageUrl) {
-    const baseUrl = getBaseUrl();
-    body.blogImage = `${baseUrl}/uploads/${blogImageUrl.filename}`; // Use the URL provided by the user
+    body.blogImage = body.blogImageUrl; // Use the URL provided by the user
   }
 
   try {
@@ -53,8 +52,8 @@ const handleGetAllBlogs = async (req, res) => {
       const d = blog.toObject();
       delete d.__v;
 
-      if (d.blogImage) {
-        d.blogImage = `${baseURL}/uploads/${d.blogImage}`;
+      if (d.blogImage && !d.blogImage.startsWith("http")) {
+        d.blogImage = `${getBaseUrl()}/${d.blogImage}`;
       }
 
       return d;
