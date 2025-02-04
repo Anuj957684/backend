@@ -131,8 +131,9 @@ const handleGetBlogById = async (req, res) => {
     const blogData = blog.toObject();
 
     // Ensure blogImage has the correct base URL
-    if (blogData.blogImage && !blogData.blogImage.startsWith("http")) {
-      blogData.blogImage = `${getBaseUrl()}/uploads/${blogData.blogImage}`;
+    if (photo) {
+      const baseUrl = getBaseUrl();
+      body.blogImage = `${baseUrl}/uploads/${photo.filename}`; // Use the correct base URL
     }
 
     return res.status(200).json({ status: 200, message: "Blog retrieved successfully", data: blogData });
