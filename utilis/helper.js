@@ -1,7 +1,11 @@
 const getBaseUrl = () => {
-    return `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}`;
-  };
-
+  // If BASE_URL is set (production), use it
+  if (process.env.BASE_URL) {
+    return process.env.BASE_URL;
+  }
+  // Otherwise, use local development URL
+  return `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}`;
+};
 
 
 
