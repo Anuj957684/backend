@@ -20,6 +20,7 @@ const handleCreateBlog = async (req, res) => {
 
   // If an image URL is provided in the request body
   if (body.blogImageUrl) {
+    const baseUrl = getBaseUrl();
     body.blogImage = body.blogImageUrl; // Use the URL provided by the user
   }
 

@@ -4,18 +4,22 @@ const path = require("path");
 // Define storage configuration for Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads")); // Save in 'uploads' folder
+    // Set the destination folder for uploaded files
+    cb(null, path.join(__dirname, "../uploads"));
   },
   filename: (req, file, cb) => {
-    const filename = Date.now() + path.extname(file.originalname);
-    cb(null, filename);
+    // Set the file name with the original name
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
+// Create the upload middleware
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 30 * 1024 * 1024 }, // 30MB limit
+  limits: { fileSize: 30 * 1024 * 1024 }, // Limit file size to 30 MB
   fileFilter: (req, file, cb) => {
+    const allowedTypes = ["image/", "model/gltf-binary"]; // Allow images and .glb files
+
     if (file.mimetype.startsWith("image/") || file.mimetype === "model/gltf-binary") {
       cb(null, true);
     } else {
@@ -24,17 +28,4 @@ const upload = multer({
   },
 });
 
-// Middleware to return file URL using Render backend
-const getUploadedFilePath = (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
-  }
-
-  // Render backend URL
-  const backendUrl = "https://backend-zd8i.onrender.com";
-  const fileUrl = `${backendUrl}/uploads/${req.file.filename}`;
-
-  res.json({ fileUrl });
-};
-
-module.exports = { upload, getUploadedFilePath };
+module.exports = upload;
