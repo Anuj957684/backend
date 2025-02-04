@@ -53,8 +53,8 @@ const handleGetAllBlogs = async (req, res) => {
       const d = blog.toObject();
       delete d.__v;
 
-      if (d.blogImage && !d.blogImage.startsWith("http")) {
-        d.blogImage = `${getBaseUrl()}/${d.blogImage}`;
+      if (d.blogImage) {
+        d.blogImage = `${baseURL}/uploads/${d.blogImage}`;
       }
 
       return d;
