@@ -10,34 +10,36 @@ const jwt = require('jsonwebtoken');
 
 
 
-const handleRegister = async (req, res) => {
+const handleRegister =  async (req, res) => {
   try {
     const body = req.body;
     if (!validateUser(body)) {
       return res.status(400).json({ status: 400, message: "Fill required fields" });
     }
+    
+
+    
 
     const photo = req.file;
     if (!photo) {
       return res.status(400).json({ status: 400, message: "No photo uploaded" });
     }
 
-    // The URL will be "https://your-server.com/uploads/filename"
-    body.photo = `https://backend-zd8i.onrender.com/uploads/${photo.filename}`;
-    
+    body.photo = `/uploads/${photo.filename}`;
     const newUser = await createUser(body);
 
-    if (!newUser) {
-      return res.status(400).json({ status: 400, message: "Error occurred" });
+    if(!newUser) {
+        return res.status(400).json({ status:400 , message:"error occurred"})  
     }
 
-    return res.status(200).json({ status: 200, message: "Registered successfully", data: newUser });
+    return res.status(200).json({ status:200 , message:"Registered successfully" , date: newUser});
 
+  
   } catch (err) {
-    return res.status(500).json({ status: 500, message: "Internal server error", err: err.message });
+   
+    return res.status(500).json({ status:500 , message:"Internal server error" ,err:err.message });
   }
 };
-
 
 
 const handleLogin = async(req,res) => {
