@@ -6,10 +6,10 @@ const upload = require("../utilis/fileUploader");
 const { handleCreateBlog, handleGetAllBlogs, handleUpdateBlog, handleDeleteBlog, handleGetBlogById } = require('../controllers/blogs');
 
 
-routes.post("/posts", authenticateToken, upload.single("blogImage"), handleCreateBlog)
-routes.get("/posts" , authenticateToken, handleGetAllBlogs);
-routes.get("/posts/:id" ,  authenticateToken ,handleGetBlogById)
-routes.put("/posts/:id" , authenticateToken, upload.single("blogImage"), handleUpdateBlog);
-routes.delete("/posts/:id" , authenticateToken, handleDeleteBlog)
+routes.post("/posts", upload.single("blogImage"), handleCreateBlog)
+routes.get("/posts" ,  handleGetAllBlogs);
+routes.get("/posts/:id" ,  handleGetBlogById)
+routes.put("/posts/:id" ,  upload.single("blogImage"), handleUpdateBlog);
+routes.delete("/posts/:id" ,  handleDeleteBlog)
 
 module.exports = routes;
