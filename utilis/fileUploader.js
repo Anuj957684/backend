@@ -1,24 +1,32 @@
 const multer = require("multer");
 const path = require("path");
 
+// Define storage configuration for Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    // Set the destination folder for uploaded files
     cb(null, path.join(__dirname, "../uploads"));
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Add timestamp to filename
+    // Set the file name with the original name
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
+// Create the upload middleware
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 30 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 }, // Limit file size to 30 MB
   fileFilter: (req, file, cb) => {
-    const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif", "model/gltf-binary", "model/gltf+json"]; // More specific image types
-    if (allowedMimeTypes.includes(file.mimetype)) {
-      cb(null, true);
+   
+
+    if (
+      file.mimetype === "model/gltf-binary" ||
+      path.extname(file.originalname).toLowerCase() === ".glb"
+    ) {
+      cb(null, true); // Accept the file
     } else {
-      cb(new Error("Invalid file type. Only images (jpeg, png, gif) and .glb files are allowed."), false);
+      cb(new Error("Invalid file type, only .glb files are allowed!"), false); // Reject non-.glb files
     }
   },
 });
