@@ -20,14 +20,17 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
    
 
-    if (
-      file.mimetype === "model/gltf-binary" ||
-      path.extname(file.originalname).toLowerCase() === ".glb"
-    ) {
-      cb(null, true); // Accept the file
-    } else {
-      cb(new Error("Invalid file type, only .glb files are allowed!"), false); // Reject non-.glb files
-    }
+   if (
+  file.mimetype === "model/gltf-binary" ||
+  file.mimetype === "model/vnd.usdz+zip" || // Add USDZ MIME type
+  path.extname(file.originalname).toLowerCase() === ".glb" ||
+  path.extname(file.originalname).toLowerCase() === ".usdz" // Add USDZ extension check
+) {
+  cb(null, true); // Accept the file
+} else {
+  cb(new Error("Invalid file type, only .glb and .usdz files are allowed!"), false); // Reject other files
+}
+
   },
 });
 
