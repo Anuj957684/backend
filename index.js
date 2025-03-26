@@ -17,6 +17,7 @@ const MONOGO_URL = process.env.MONOG_URI;
 
 const userRoute = require('./routes/userRoutes.js');
 const blogRoute = require('./routes/blogRoutes.js');
+const researchRoutes = require('./routes/researchRoutes.js');
 
 
 
@@ -35,6 +36,7 @@ try {
 // Define routes
 app.use('/api', userRoute);
 app.use('/api', blogRoute);
+app.use('/api', researchRoutes);
 
 // Start server
 const port = process.env.PORT || 3000;

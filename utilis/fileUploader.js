@@ -4,33 +4,28 @@ const path = require("path");
 // Define storage configuration for Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // Set the destination folder for uploaded files
-    cb(null, path.join(__dirname, "../uploads"));
+    cb(null, path.join(__dirname, "../uploads")); // Ensure this path exists
   },
   filename: (req, file, cb) => {
-    // Set the file name with the original name
+    // Set a unique filename with original extension
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-// Create the upload middleware
+// File filter for images only
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // Limit file size to 30 MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10 MB
   fileFilter: (req, file, cb) => {
-   
+    const fileTypes = /jpeg|jpg|png|gif|webp/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
 
-   if (
-  file.mimetype === "model/gltf-binary" ||
-  file.mimetype === "model/vnd.usdz+zip" || // Add USDZ MIME type
-  path.extname(file.originalname).toLowerCase() === ".glb" ||
-  path.extname(file.originalname).toLowerCase() === ".usdz" // Add USDZ extension check
-) {
-  cb(null, true); // Accept the file
-} else {
-  cb(new Error("Invalid file type, only .glb and .usdz files are allowed!"), false); // Reject other files
-}
-
+    if (extname && mimetype) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files (jpg, jpeg, png, gif, webp) are allowed!"));
+    }
   },
 });
 

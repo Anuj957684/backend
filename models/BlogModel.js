@@ -16,13 +16,14 @@ const blogSchema = new mongoose.Schema({
   about: {
     type: String,
     required: true,
-    minlength: [200, "Should caontain atleast 200 characters!"],
+   
   },
-  createdBy: {
-    type: mongoose.Schema.ObjectId,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-  },
-});
+    required: true
+  }
+}, { timestamps: true });
 
 
 
@@ -34,11 +35,10 @@ const createBlog = async(body)=> {
     return newUser;
 }
 
-const getBlogs = async() => {
-    
-    const blogs =  Blog.find();
-    return  blogs;
-}
+const getBlogs = async () => {
+  return await Blog.find().populate("user", "name email");
+  return Blog;
+};
 
 
 
